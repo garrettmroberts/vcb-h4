@@ -1,29 +1,69 @@
 var timer;
 var score = 0;
 var secondsLeft = 60;
-var isWaiting = true;
-var questions = ["Which operator separates statements within a for loop?", "How does one prevent bubbling of an event?"];
-var answers = [":", ",", ";", "!", "preventDefault()", "stopPropogation()", "getItem()", "setItem()"];
-var correctAnswers = [2, 5];
+var questions = [
+  {
+    "question": "Which operator separates statements within a for loop?",
+    "answers": [":", ",", ";", "!"],
+    "correctAnswerIndex": "2"
+  }, 
+  {
+    "question": "How does one prevent bubbling of an event?",
+    "answers": ["preventDefault()", "stopPropogation()", "getItem()", "setItem()"],
+    "correctAnswerIndex": "1"
+  },
+  {
+    "question": "What are the attributes of the 'let' keyword?",
+    "answers": ["cannot be redeclared", "cannot be reassigned", "both of these", "neither of these"],
+    "correctAnswerIndex": "0" 
+  },
+  {
+    "question": "Which Javascript object is not natively iterable?",
+    "answers": ["strings", "arrays", "integers", "objects"],
+    "correctAnswerIndex": "3"
+  },
+  {
+    "question": "Which CSS selector has the highest level of specificity?",
+    "answers": ["element", "classes", "!important", "ids"],
+    "correctAnswerIndex": "2"
+  },
+  {
+    "question": "Which is not a component of the MERN stack?",
+    "answers": ["MySQL", "Node.js", "Express", "Native.js"],
+    "correctAnswerIndex": "3"
+  },
+  {
+    "question": "Which is not a Javascript popup function?",
+    "answers": ["input()", "alert()", "prompt()", "confirm()"],
+    "correctAnswerIndex": "0"
+  },
+  {
+    "question": "Which jQuery method is used to create event listeners?",
+    "answers": [".html()", ".on()", ".text()", ".attr()"],
+    "correctAnswerIndex": "1"
+  },
+  {
+    "question": "Which coding platform is the best?",
+    "answers": ["xCode", "Brackets", "Sublime", "vsCode"],
+    "correctAnswerIndex": "3"
+  },
+];
+
 var globalIndex = 0;
 
 // Begins program when Start Button is pressed.
-$("#startButton").on("click", updateUI);
+$("#startButton").on("click", beginQuiz);
 $(".answerButton").on("click", function() {
   var userChoice = $(this).val();
   checkIfCorrect(userChoice);
 });
 
 // All of the main quiz logic is stored here.
-function updateUI() {
+function beginQuiz() {
   startTimer();
   changeForms();
-  // For loop updates UI to next question on user event
-  for (i = 0; i < questions.length; i++) {
-    globalIndex++;
-    buildQuestion(i);
-    // On user answer event, check if the answer is correct
-  };
+  buildQuestions();
+
 };
 
 // Starts interval named 'timer'.  Pushes secondsLeft on screen.
@@ -31,6 +71,9 @@ function startTimer() {
   timer = setInterval(function() {
     $("#timerEl").text(secondsLeft);
     secondsLeft--;
+    if (secondsLeft === 0) {
+      openHighScores();
+    }
   }, 1000);
 };
 
@@ -41,38 +84,52 @@ function changeForms() {
 };
 
 // Builds a question and answer mix based on a given index arg
-function buildQuestion(index) {
+function buildQuestions() {
+
   // Sets Form Question
-  $("#formQuestion").text(questions[index]).attr("for", "question" + (index + 1));
+  $("#formQuestion").text(questions[globalIndex].question).attr("for", "question" + (globalIndex + 1));
 
   // Set Form Answer buttons
   var buttons = $("button");
   var answerIndex = 0;
-  if (index > 0) {
-    var answerIndex = index * 4;
-  }
 
   // Populates answer buttons
-  $("#button1").text(answers[answerIndex]);
-  $("#button2").text(answers[answerIndex + 1]);
-  $("#button3").text(answers[answerIndex + 2]);
-  $("#button4").text(answers[answerIndex + 3]);
+  $("#button1").text(questions[globalIndex].answers[0]);
+  $("#button2").text(questions[globalIndex].answers[1]);
+  $("#button3").text(questions[globalIndex].answers[2]);
+  $("#button4").text(questions[globalIndex].answers[3]);
 };
 
-// Asseses user choice vs correct answer.  Requires user input value.
+// Asseses user choice vs correct answer.  Requires user input value.  Updates to next question.
 function checkIfCorrect(event) {
-  // Increments score if values are equal
-  if (correctAnswers[globalIndex].toString() === event.toString()) {
-    score += 1;
+  // Increments score if correct
+  if (event == questions[globalIndex].correctAnswerIndex) {
+    score++;
     $("#scoreEl").text(score);
-    // removes 5 seconds from secondsLeft if answer is incorrect
+    // Lowers secondsLeft by 5 if wrong
   } else {
     secondsLeft -= 5;
   }
+  // Increments global index in preparation of next form question
+  globalIndex++;
+
+  if (globalIndex < questions.length) {
+    buildQuestions();
+  } else {
+    openHighScores();
+  }
+};
+
+function openHighScores() {
+  console.log("It worked.")
+  $(".formRow").addClass("d-none");
+  $("#endDiv").removeClass("d-none").addClass("d-flex flex-column");
+  $("#answeredCorrect").text(score);
 };
 
 
 // Testing functions
-startTimer();
+// startTimer();
 changeForms();
-buildQuestion(1);
+// buildQuestions(0);
+openHighScores();
