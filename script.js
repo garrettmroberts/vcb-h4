@@ -1,14 +1,38 @@
 var timer = 50;
 var score = 0;
+var secondsLeft = 60;
+var timer;
+var isWaiting = true;
 var questions = ["Which operator separates statements within a for loop?", "How does one prevent bubbling of an event?"];
 var answers = [":", ",", ";", "!", "preventDefault()", "stopPropogation()", "getItem()", "setItem()"];
+var correctAnswers = [2, 5];
+var globalIndex = 0;
 
+// Begins program when Start Button is pressed.
+$("#startButton").on("click", updateUI);
+$(".answerButton").on("click", function() {
+  var userChoice = $(this).val();
+  checkIfCorrect(userChoice);
+});
+
+// All of the main quiz logic is stored here.
 function updateUI() {
+  startTimer();
   changeForms();
-  for (var i = 0; i < questions.length; i++) {
+  for (i = 0; i < questions.length; i++) {
+    globalIndex++;
     buildQuestion(i);
+    // On user answer event, check if the answer is correct
   };
-}
+};
+
+// Starts interval named 'timer'.  Pushes secondsLeft ot screen.
+function startTimer() {
+  timer = setInterval(function() {
+    $("#timerEl").text(secondsLeft);
+    secondsLeft--;
+  }, 1000);
+};
 
 function changeForms() {
   $("#startDiv").addClass("d-none").removeClass("d-flex").removeClass("flex-column");
@@ -16,8 +40,6 @@ function changeForms() {
 };
 
 function buildQuestion(index) {
-  // Question and answer arrays.  Used to generate questions via indices
-
   // Sets Form Question
   $("#formQuestion").text(questions[index]).attr("for", "question" + (index + 1));
 
@@ -35,4 +57,17 @@ function buildQuestion(index) {
   $("#button4").text(answers[answerIndex + 3]);
 };
 
-updateUI();
+function checkIfCorrect(event) {
+  if (correctAnswers[globalIndex].toString() === event.toString()) {
+    score += 1;
+    $("#scoreEl").text(score);
+  } else {
+    secondsLeft -= 5;
+  }
+};
+
+
+// Testing functions
+startTimer();
+changeForms();
+buildQuestion(1);

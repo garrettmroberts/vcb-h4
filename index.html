@@ -15,7 +15,7 @@
 <body>
   <div class="container-flex d-flex justify-content-between align-items-center pt-3 px-4 bg-primary text-light test">
     <a><p>View Highscores</p></a>
-    <p>Time left: <span id="timer">60</span></p>
+    <p>Time left: <span id="timerEl">60</span></p>
   </div>
   
   <div class="container d-flex flex-column align-items-center bg-light text-primary text-center my-5" id="test">
@@ -24,19 +24,22 @@
     </div>
     <div class="row formRow d-none">
       <div class="col-sm-6">
-        <button type="button" class="btn btn-outline-primary p-2 m-3" value="1" id="button1"></button>
+        <button type="button" class="btn btn-outline-primary p-2 m-3 answerButton" value="1" id="button1"></button>
       </div>
       <div class="col-sm-6">
-        <button type="button" class="btn btn-outline-primary p-2 m-3" value="2" id="button2"></button>
+        <button type="button" class="btn btn-outline-primary p-2 m-3 answerButton" value="2" id="button2"></button>
       </div>
     </div>
     <div class="row formRow d-none">
       <div class="col-sm-6">
-        <button type="button" class="btn btn-outline-primary p-2 m-3" value="3" id="button3"></button>
+        <button type="button" class="btn btn-outline-primary p-2 m-3 answerButton" value="3" id="button3"></button>
       </div>
       <div class="col-sm-6">
-        <button type="button" class="btn btn-outline-primary p-2 m-3" value="4" id="button4"></button>
+        <button type="button" class="btn btn-outline-primary p-2 m-3 answerButton" value="4" id="button4"></button>
       </div>
+    </div>
+    <div class="row formRow d-none">
+      <p>Score: <span id="scoreEl">0</span></p>
     </div>
 
     <div class="row d-flex flex-column" id="startDiv">
@@ -44,8 +47,8 @@
       <button type="button" class="btn btn-primary btn-lg py-4 px-3 m-3 mb-5" id="startButton">Start</button>
     </div>
     
-    </div>
   </div>
+</div>
   
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
