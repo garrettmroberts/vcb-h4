@@ -53,10 +53,16 @@ var globalIndex = 0;
 
 // Begins program when Start Button is pressed.
 $("#startButton").on("click", beginQuiz);
+
+// Processes answer click and processes accordingly
 $(".answerButton").on("click", function() {
   var userChoice = $(this).val();
   checkIfCorrect(userChoice);
 });
+
+// Saves user's initials and scores to local storage.
+$("#highScoreSubmit").on("click", setUserInput);
+
 
 // All of the main quiz logic is stored here.
 function beginQuiz() {
@@ -69,8 +75,8 @@ function beginQuiz() {
 // Starts interval named 'timer'.  Pushes secondsLeft on screen.
 function startTimer() {
   timer = setInterval(function() {
-    $("#timerEl").text(secondsLeft);
     secondsLeft--;
+    $("#timerEl").text(secondsLeft);
     if (secondsLeft === 0) {
       openHighScores();
     }
@@ -113,6 +119,7 @@ function checkIfCorrect(event) {
   // Increments global index in preparation of next form question
   globalIndex++;
 
+  // Creates next question with globalIndex or shifts to high score screen if necessary
   if (globalIndex < questions.length) {
     buildQuestions();
   } else {
@@ -121,15 +128,36 @@ function checkIfCorrect(event) {
 };
 
 function openHighScores() {
-  console.log("It worked.")
+  clearInterval(timer);
   $(".formRow").addClass("d-none");
-  $("#endDiv").removeClass("d-none").addClass("d-flex flex-column");
+  $("#endDiv").removeClass("d-none");
   $("#answeredCorrect").text(score);
+};
+
+function setUserInput() {
+  // Gets high Score list from local storage
+  var oldItems = JSON.parse(localStorage.getItem('scoreList')) || [];
+  // Gets initials from user
+  var initials = $("#userInitialsInput").val()
+
+  // Creates new user Object
+  var user = {
+    "name": initials,
+    "highScore": score
+  };
+  // Appends new user to high score list
+  oldItems.push(user);
+
+  // pushes updated list to local storage
+  localStorage.setItem("scoreList", JSON.stringify(oldItems));
+
+  $("#userInitialsInput").addClass("d-none");
+  $("#highScoreSubmit").addClass("d-none");
 };
 
 
 // Testing functions
 // startTimer();
-changeForms();
 // buildQuestions(0);
+changeForms();
 openHighScores();

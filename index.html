@@ -47,19 +47,46 @@
       <button type="button" class="btn btn-primary btn-lg py-4 px-3 m-3 mb-5" id="startButton">Start</button>
     </div>
 
-    <div class="row d-none" id="endDiv">
+  </div>
+  
+  <div class="container d-none" id="endDiv">
+    <div class="row">
       <div class="col-lg-12">
         <h2>Congrats!</h2>
         <p>You got <span id="answeredCorrect"></span> out of 10 questions.</p>
-      </div>
-      <div class="col-lg-4 Highscores">
-        <p>Names</p>
-      </div>
-      <div class="col-lg-4 Highscores">
-        <p>Scores</p>
+        <input type="text" id="userInitialsInput" placeholder="Enter your initials.">
+        <button type="button" class="btn btn-primary btn-sm" id="highScoreSubmit">Submit</button>
       </div>
     </div>
-    
+    <div class="row mt-4">
+      <table class="table">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Initials</th>
+            <th scope="col">Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>MDK</td>
+            <td>9</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>JEF</td>
+            <td>8</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>ASS</td>
+            <td>0</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
   </div>
 </div>
   
