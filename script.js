@@ -1,7 +1,6 @@
-var timer = 50;
+var timer;
 var score = 0;
 var secondsLeft = 60;
-var timer;
 var isWaiting = true;
 var questions = ["Which operator separates statements within a for loop?", "How does one prevent bubbling of an event?"];
 var answers = [":", ",", ";", "!", "preventDefault()", "stopPropogation()", "getItem()", "setItem()"];
@@ -19,6 +18,7 @@ $(".answerButton").on("click", function() {
 function updateUI() {
   startTimer();
   changeForms();
+  // For loop updates UI to next question on user event
   for (i = 0; i < questions.length; i++) {
     globalIndex++;
     buildQuestion(i);
@@ -26,7 +26,7 @@ function updateUI() {
   };
 };
 
-// Starts interval named 'timer'.  Pushes secondsLeft ot screen.
+// Starts interval named 'timer'.  Pushes secondsLeft on screen.
 function startTimer() {
   timer = setInterval(function() {
     $("#timerEl").text(secondsLeft);
@@ -34,11 +34,13 @@ function startTimer() {
   }, 1000);
 };
 
+// Changes from start form to quiz form
 function changeForms() {
   $("#startDiv").addClass("d-none").removeClass("d-flex").removeClass("flex-column");
   $(".formRow").removeClass("d-none");
 };
 
+// Builds a question and answer mix based on a given index arg
 function buildQuestion(index) {
   // Sets Form Question
   $("#formQuestion").text(questions[index]).attr("for", "question" + (index + 1));
@@ -57,10 +59,13 @@ function buildQuestion(index) {
   $("#button4").text(answers[answerIndex + 3]);
 };
 
+// Asseses user choice vs correct answer.  Requires user input value.
 function checkIfCorrect(event) {
+  // Increments score if values are equal
   if (correctAnswers[globalIndex].toString() === event.toString()) {
     score += 1;
     $("#scoreEl").text(score);
+    // removes 5 seconds from secondsLeft if answer is incorrect
   } else {
     secondsLeft -= 5;
   }
