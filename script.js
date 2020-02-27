@@ -43,6 +43,11 @@ var questions = [
     "correctAnswerIndex": "1"
   },
   {
+    "question": "Freebie: Click button #4",
+    "answers": ["#1", "#2", "#3", "#4"],
+    "correctAnswerIndex": "3"
+  },
+  {
     "question": "Which coding platform is the best?",
     "answers": ["xCode", "Brackets", "Sublime", "vsCode"],
     "correctAnswerIndex": "3"
@@ -62,6 +67,9 @@ $(".answerButton").on("click", function() {
 
 // Saves user's initials and scores to local storage.
 $("#highScoreSubmit").on("click", setUserInput);
+
+// Resets global variables, restarts quiz
+$("#restartBtn").on("click", clearAndRestart);
 
 
 // All of the main quiz logic is stored here.
@@ -86,6 +94,7 @@ function startTimer() {
 // Changes from start form to quiz form
 function changeForms() {
   $("#startDiv").addClass("d-none").removeClass("d-flex").removeClass("flex-column");
+  $("#endDiv").addClass("d-none");
   $(".formRow").removeClass("d-none");
 };
 
@@ -155,9 +164,18 @@ function setUserInput() {
   $("#highScoreSubmit").addClass("d-none");
 };
 
+function clearAndRestart() {
+  score = 0;
+  $("#scoreEl").text(score);
+  secondsLeft = 60;
+  $("#timerEl").text(secondsLeft);
+  globalIndex = 0;
+  beginQuiz();
+};
+
 
 // Testing functions
 // startTimer();
 // buildQuestions(0);
-changeForms();
-openHighScores();
+// changeForms();
+// openHighScores();
