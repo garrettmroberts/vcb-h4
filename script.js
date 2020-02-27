@@ -152,7 +152,7 @@ function setUserInput() {
   // Gets initials from user
   var initials = $("#userInitialsInput").val()
 
-  if (initials.length === 3 && /[a-z]/gi.test(initials)) {
+  if (/^[a-z]{3}$/gi.test(initials)) {
     // Gets high Score list from local storage
     var oldItems = JSON.parse(localStorage.getItem('scoreList')) || [];
   
@@ -184,18 +184,9 @@ function updateHighScoreTable() {
   var initialsEl = $(".initialsEl");
   var highScoreEl = $(".highScoreEl");
 
-  if (highScoreList.length > 5) {
-    var counterStop = 5;
-  } else {
-    var counterStop = highScoreList.length;
-  }
-  for (var i = 0; i < counterStop; i++) {
-    var newNamePlaceholder = initialsEl[i];
-    newNamePlaceholder.append(highScoreList[i].name);
-    
-    var newHighScorePlaceholder = highScoreEl[i];
-    newHighScorePlaceholder.append(highScoreList[i].highScore)
-    
+  for (var i = 0; i < highScoreList.length; i++) {
+    $(initialsEl.get(i)).text(highScoreList[i].name);
+    $(highScoreEl.get(i)).text(highScoreList[i].highScore);
   };
 };
 
