@@ -141,27 +141,62 @@ function openHighScores() {
   $(".formRow").addClass("d-none");
   $("#endDiv").removeClass("d-none");
   $("#answeredCorrect").text(score);
+  $("#userInitialsInput").removeClass("d-none");
+  $("#highScoreSubmit").removeClass("d-none");
+  if (JSON.parse(localStorage.getItem('scoreList')) != null) {
+    updateHighScoreTable();
+  }
 };
 
 function setUserInput() {
-  // Gets high Score list from local storage
-  var oldItems = JSON.parse(localStorage.getItem('scoreList')) || [];
   // Gets initials from user
   var initials = $("#userInitialsInput").val()
 
-  // Creates new user Object
-  var user = {
-    "name": initials,
-    "highScore": score
+  if (initials.length === 3 && /[a-z]/gi.test(initials)) {
+    // Gets high Score list from local storage
+    var oldItems = JSON.parse(localStorage.getItem('scoreList')) || [];
+  
+    // Creates new user Object
+    var user = {
+      "name": initials.toUpperCase(),
+      "highScore": score
+    };
+    // Appends new user to high score list
+    oldItems.push(user);
+  
+    oldItems.sort(function (a, b) {
+      return parseFloat(b.highScore) - parseFloat(a.highScore);
+    });
+  
+    // pushes updated list to local storage
+    localStorage.setItem("scoreList", JSON.stringify(oldItems));
+  
+    $("#userInitialsInput").addClass("d-none");
+    $("#highScoreSubmit").addClass("d-none");
+    $(".initialsEl").text("");
+    $(".highScoreEl").text("");
+    updateHighScoreTable();
   };
-  // Appends new user to high score list
-  oldItems.push(user);
+};
 
-  // pushes updated list to local storage
-  localStorage.setItem("scoreList", JSON.stringify(oldItems));
+function updateHighScoreTable() {
+  var highScoreList = JSON.parse(localStorage.getItem('scoreList'));
+  var initialsEl = $(".initialsEl");
+  var highScoreEl = $(".highScoreEl");
 
-  $("#userInitialsInput").addClass("d-none");
-  $("#highScoreSubmit").addClass("d-none");
+  if (highScoreList.length > 5) {
+    var counterStop = 5;
+  } else {
+    var counterStop = highScoreList.length;
+  }
+  for (var i = 0; i < counterStop; i++) {
+    var newNamePlaceholder = initialsEl[i];
+    newNamePlaceholder.append(highScoreList[i].name);
+    
+    var newHighScorePlaceholder = highScoreEl[i];
+    newHighScorePlaceholder.append(highScoreList[i].highScore)
+    
+  };
 };
 
 function clearAndRestart() {
@@ -170,12 +205,7 @@ function clearAndRestart() {
   secondsLeft = 60;
   $("#timerEl").text(secondsLeft);
   globalIndex = 0;
+  $(".initialsEl").text("");
+  $(".highScoreEl").text("");
   beginQuiz();
 };
-
-
-// Testing functions
-// startTimer();
-// buildQuestions(0);
-// changeForms();
-// openHighScores();
