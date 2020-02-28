@@ -1,3 +1,5 @@
+$(document).ready(function() {
+
 var timer;
 var score = 0;
 var secondsLeft = 60;
@@ -200,3 +202,5 @@ function clearAndRestart() {
   $(".highScoreEl").text("");
   beginQuiz();
 };
+
+});
